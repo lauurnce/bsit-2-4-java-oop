@@ -62,10 +62,10 @@ If you just want to download the code to practice and receive my updates as the 
 
 1. Navigate to the folder where you want to save the class files:
    ```bash
-   cd path/to/your/preferred/folder
+   cd C:\Users\Admin\Desktop
 2. Clone the repository to your local machine:
    ```bash
-   git clone [https://github.com/](https://github.com/)[Your-GitHub-Username]/[Repository-Name].git
+   git clone https://github.com/lauurnce/bsit-2-4-java-oop.git
    ```
 3. To pull new codes I add in future weeks, navigate inside the folder and run:
    ```bash
