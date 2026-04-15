@@ -1,6 +1,6 @@
 package mar_21_2026;
 
-public class NoteTakingFile {
+public class WorkflowInJava {
 	// TOPIC: Workflow in JAVA
 	// it executes from top to bottom
 	// according to which they appear 
