@@ -13,7 +13,7 @@ class JavaCollectionDemo {
 
         // 1) LIST: ordered, allows duplicates (commonly ArrayList)
         List<String> fruits = new ArrayList<>();
-        fruits.add("Apple");
+        fruits.add("Apples");
         fruits.add("Banana");
         fruits.add("Apple"); // duplicate is allowed
         fruits.add("Mango");
