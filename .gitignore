@@ -1,0 +1,5 @@
+# Claude Code local config — not for version control
+.claude/
+
+# Compiled class files
+*.class
