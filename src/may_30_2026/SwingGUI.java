@@ -75,5 +75,4 @@ public class SwingGUI {
 	        frame.add(outputScrollPane);
 	        frame.setVisible(true);
 	    }
-	}
 }
