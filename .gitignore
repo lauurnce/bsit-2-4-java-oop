@@ -3,3 +3,8 @@
 
 # Compiled class files
 *.class
+
+# Final project: ignore compiled output and the live SQLite database.
+# The driver jar in final-project/lib/ IS committed so teammates can run it.
+final-project/bin/
+final-project/db/*.db
