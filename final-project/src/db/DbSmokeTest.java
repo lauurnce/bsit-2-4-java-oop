@@ -25,6 +25,9 @@ public class DbSmokeTest {
             for (String t : new String[]{"buyers", "loans", "properties", "users"})
                 if (!tables.contains(t)) throw new AssertionError("missing table " + t);
         }
+        dao.UserDao udao = new dao.UserDao();
+        if (udao.login("admin", "admin123") == null) throw new AssertionError("admin login failed");
+        if (udao.login("admin", "wrong") != null) throw new AssertionError("bad login accepted");
         System.out.println("DB SMOKE OK");
     }
 }
