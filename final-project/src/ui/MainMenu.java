@@ -25,7 +25,7 @@ public class MainMenu extends JFrame {
         buyers.addActionListener(e -> openPanel("Buyers", new BuyerPanel()));
         props.addActionListener(e -> openPanel("Properties", new PropertyPanel()));
         loans.addActionListener(e -> openPanel("Loans", new LoanPanel()));
-        reports.addActionListener(e -> new ReportWindow().setVisible(true));
+        reports.addActionListener(e -> openPanel("Reports", new ReportPanel()));
         logout.addActionListener(e -> { Session.current = null; dispose();
             new LoginWindow().setVisible(true); });
 
@@ -33,10 +33,24 @@ public class MainMenu extends JFrame {
         add(p);
     }
 
+    /**
+     * Open a feature panel in a modal dialog with a "Back to Menu" button at the
+     * top. Closing the dialog (Back button or window X) returns to this menu.
+     */
     private void openPanel(String title, JPanel panel) {
         JDialog d = new JDialog(this, title, true);
-        d.setContentPane(panel);
-        d.setSize(720, 460);
+
+        JButton back = new JButton("← Back to Menu");
+        back.addActionListener(e -> d.dispose());
+        JPanel backBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        backBar.add(back);
+
+        JPanel content = new JPanel(new BorderLayout());
+        content.add(backBar, BorderLayout.NORTH);
+        content.add(panel, BorderLayout.CENTER);
+
+        d.setContentPane(content);
+        d.setSize(720, 500);
         d.setLocationRelativeTo(this);
         d.setVisible(true);
     }

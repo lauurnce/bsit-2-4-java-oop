@@ -9,18 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class ReportWindow extends JFrame {
-    public ReportWindow() {
-        setTitle("Profriends Inc. — Summary Report");
-        setSize(480, 380);
-        setLocationRelativeTo(null);
-
+/** Summary report shown inside the main-menu dialog (with a Back button). */
+public class ReportPanel extends JPanel {
+    public ReportPanel() {
+        setLayout(new BorderLayout());
         JTextArea area = new JTextArea();
         area.setEditable(false);
         area.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
-        add(new JScrollPane(area), BorderLayout.CENTER);
-
         area.setText(buildReport());
+        add(new JScrollPane(area), BorderLayout.CENTER);
     }
 
     private String buildReport() {

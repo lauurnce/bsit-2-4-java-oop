@@ -82,9 +82,15 @@ public class BuyerPanel extends JPanel {
     private void deleteSelected() {
         Integer id = selectedId();
         if (id == null) return;
-        if (!UiUtil.confirm(this, "Delete buyer #" + id + "?")) return;
-        try { dao.delete(id); loadAll(); }
-        catch (Exception ex) { UiUtil.error(this, ex.getMessage()); }
+        try {
+            int loans = dao.countLoans(id);
+            String msg = loans > 0
+                    ? "Buyer #" + id + " has " + loans + " loan(s). Deleting the buyer will also delete those loan(s). Continue?"
+                    : "Delete buyer #" + id + "?";
+            if (!UiUtil.confirm(this, msg)) return;
+            dao.delete(id);
+            loadAll();
+        } catch (Exception ex) { UiUtil.error(this, ex.getMessage()); }
     }
 
     /** Add (existing == null) or edit a buyer via a form dialog. */

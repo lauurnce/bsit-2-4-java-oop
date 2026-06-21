@@ -57,11 +57,32 @@ public class PropertyDao implements Crud<Property> {
     }
 
     @Override
+    /** Delete a property and any loans that reference it, in one transaction (cascade). */
     public void delete(int id) throws Exception {
+        try (Connection c = Database.connect()) {
+            c.setAutoCommit(false);
+            try (PreparedStatement delLoans = c.prepareStatement("DELETE FROM loans WHERE property_id=?");
+                 PreparedStatement delProp = c.prepareStatement("DELETE FROM properties WHERE property_id=?")) {
+                delLoans.setInt(1, id);
+                delLoans.executeUpdate();
+                delProp.setInt(1, id);
+                delProp.executeUpdate();
+                c.commit();
+            } catch (Exception ex) {
+                c.rollback();
+                throw ex;
+            }
+        }
+    }
+
+    /** Number of loans referencing this property. */
+    public int countLoans(int propertyId) throws Exception {
         try (Connection c = Database.connect();
-             PreparedStatement ps = c.prepareStatement("DELETE FROM properties WHERE property_id=?")) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
+             PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM loans WHERE property_id=?")) {
+            ps.setInt(1, propertyId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
         }
     }
 

@@ -59,11 +59,32 @@ public class BuyerDao implements Crud<Buyer> {
     }
 
     @Override
+    /** Delete a buyer and any loans that reference it, in one transaction (cascade). */
     public void delete(int id) throws Exception {
+        try (Connection c = Database.connect()) {
+            c.setAutoCommit(false);
+            try (PreparedStatement delLoans = c.prepareStatement("DELETE FROM loans WHERE buyer_id=?");
+                 PreparedStatement delBuyer = c.prepareStatement("DELETE FROM buyers WHERE buyer_id=?")) {
+                delLoans.setInt(1, id);
+                delLoans.executeUpdate();
+                delBuyer.setInt(1, id);
+                delBuyer.executeUpdate();
+                c.commit();
+            } catch (Exception ex) {
+                c.rollback();
+                throw ex;
+            }
+        }
+    }
+
+    /** Number of loans referencing this buyer. */
+    public int countLoans(int buyerId) throws Exception {
         try (Connection c = Database.connect();
-             PreparedStatement ps = c.prepareStatement("DELETE FROM buyers WHERE buyer_id=?")) {
-            ps.setInt(1, id);
-            ps.executeUpdate();
+             PreparedStatement ps = c.prepareStatement("SELECT COUNT(*) FROM loans WHERE buyer_id=?")) {
+            ps.setInt(1, buyerId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt(1) : 0;
+            }
         }
     }
 

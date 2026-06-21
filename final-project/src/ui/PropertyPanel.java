@@ -82,9 +82,15 @@ public class PropertyPanel extends JPanel {
     private void deleteSelected() {
         Integer id = selectedId();
         if (id == null) return;
-        if (!UiUtil.confirm(this, "Delete property #" + id + "?")) return;
-        try { dao.delete(id); loadAll(); }
-        catch (Exception ex) { UiUtil.error(this, ex.getMessage()); }
+        try {
+            int loans = dao.countLoans(id);
+            String msg = loans > 0
+                    ? "Property #" + id + " has " + loans + " loan(s). Deleting the property will also delete those loan(s). Continue?"
+                    : "Delete property #" + id + "?";
+            if (!UiUtil.confirm(this, msg)) return;
+            dao.delete(id);
+            loadAll();
+        } catch (Exception ex) { UiUtil.error(this, ex.getMessage()); }
     }
 
     private void addOrEdit(Property existing) {
