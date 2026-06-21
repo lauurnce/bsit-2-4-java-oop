@@ -12,7 +12,7 @@ mkdir -p bin db
 CP="lib/*"
 
 echo "Compiling..."
-javac -cp "$CP" -d bin src/*.java
+javac -cp "$CP" -d bin $(find src -name "*.java")
 
 echo "Running..."
-java -cp "bin:$CP" Main
+java -cp "bin:$CP" app.Main

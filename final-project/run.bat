@@ -12,11 +12,15 @@ REM The ';' is the classpath separator on Windows.
 set CP=lib/*
 
 echo Compiling...
-javac -cp "%CP%" -d bin src/*.java
+REM Gather all .java files under src\ (recursively) into a sources list.
+if exist sources.txt del sources.txt
+for /r src %%f in (*.java) do echo %%f>> sources.txt
+javac -cp "%CP%" -d bin @sources.txt
+del sources.txt
 if errorlevel 1 goto :error
 
 echo Running...
-java -cp "bin;%CP%" Main
+java -cp "bin;%CP%" app.Main
 goto :eof
 
 :error
